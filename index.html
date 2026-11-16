@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crisp Gate Launch — Ultimate Go-Live Sequence</title>
+    <title>Crisp Suite — Launch Gate</title>
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#07050a">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -57,11 +57,17 @@
 
         .hidden { display: none !important; }
 
-        /* Theme Toggle Button */
-        .theme-toggle {
+        /* Top Controls Container */
+        .controls {
             position: fixed;
             top: 20px;
             right: 20px;
+            display: flex;
+            gap: 8px;
+            z-index: 100;
+        }
+
+        .control-btn {
             background: var(--card-bg);
             border: 1px solid var(--border);
             color: var(--text-main);
@@ -71,7 +77,6 @@
             font-size: 0.8rem;
             font-weight: 700;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            z-index: 100;
         }
 
         /* --- STEP 1: 3D ENVELOPE --- */
@@ -146,7 +151,7 @@
 
         .env-sub { font-size: 0.85rem; color: var(--text-muted); }
 
-        /* --- STEP 2: STEP-BY-STEP SCREENING CARD --- */
+        /* --- STEP 2: GATE CARD --- */
         .gate-card {
             width: 100%;
             max-width: 480px;
@@ -265,7 +270,7 @@
             text-align: center;
         }
 
-        /* --- STEP 3: EPIC SUCCESS PASS + ANIMATIONS --- */
+        /* --- STEP 3: SUCCESS PASS --- */
         .vip-pass {
             width: 100%;
             max-width: 460px;
@@ -340,7 +345,10 @@
 </head>
 <body data-theme="dark">
 
-    <button class="theme-toggle" onclick="toggleTheme()">☀️ / 🌙 Theme</button>
+    <div class="controls">
+        <button class="control-btn" onclick="toggleLang()" id="langBtn">🇵🇭 Tagalog</button>
+        <button class="control-btn" onclick="toggleTheme()">☀️ / 🌙</button>
+    </div>
 
     <!-- STEP 1: 3D ENVELOPE -->
     <div class="envelope-wrapper" id="stepEnvelope" onclick="openEnvelope()">
@@ -349,8 +357,8 @@
             <div class="pocket"></div>
             <div class="wax-seal">🚀</div>
         </div>
-        <div class="env-prompt">LAUNCH SEQUENCE GATE</div>
-        <div class="env-sub">Tap wax seal to initiate countdown & go-live</div>
+        <div class="env-prompt" data-i18n="envPrompt">LAUNCH SEQUENCE GATE</div>
+        <div class="env-sub" data-i18n="envSub">Tap wax seal to initiate countdown & go-live</div>
     </div>
 
     <!-- STEP 2: STEP-BY-STEP SCREENING CARD -->
@@ -360,7 +368,7 @@
             <button class="mode-btn" id="tabBeta" onclick="switchMode('beta')">⚡ Beta Release</button>
         </div>
 
-        <div class="step-indicator" id="stepIndicator">Step 1 of 4 • MAINNET</div>
+        <div class="step-indicator" id="stepIndicator">Step 1 of 4</div>
         <div class="question-title" id="qTitle">Commander Name?</div>
         <div class="question-desc" id="qDesc">Ilagay ang pangalan ng opisyal na magpapatakbo ng launch.</div>
 
@@ -371,38 +379,124 @@
         <div class="error-text" id="errorMsg"></div>
 
         <div class="btn-group">
-            <button class="btn-back hidden" id="btnBack" onclick="prevStep()">Bumalik</button>
-            <button class="btn-next" id="btnNext" onclick="nextStep()">Susunod ➔</button>
+            <button class="btn-back hidden" id="btnBack" onclick="prevStep()" data-i18n="btnBack">Back</button>
+            <button class="btn-next" id="btnNext" onclick="nextStep()" data-i18n="btnNext">Next ➔</button>
         </div>
     </div>
 
     <!-- STEP 3: SUCCESS PASS -->
     <div class="vip-pass hidden" id="stepPass">
-        <div class="success-icon" id="successEmoji">🚀</div>
-        <h2 id="successHeader">Launch Sequence Successful</h2>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;" id="successSub">Handa nang mag-live ang ecosystem.</p>
+        <div class="success-icon">🚀</div>
+        <h2 data-i18n="successHeader">Launch Sequence Successful</h2>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;" data-i18n="successSub">Handa nang mag-live ang ecosystem.</p>
 
         <div class="ticket-box">
-            <div class="ticket-row"><span class="t-label">Commander:</span><span class="t-val" id="resName"></span></div>
-            <div class="ticket-row"><span class="t-label">Mission:</span><span class="t-val" id="resMission"></span></div>
-            <div class="ticket-row"><span class="t-label">Launch Window:</span><span class="t-val" id="resWindow"></span></div>
-            <div class="ticket-row"><span class="t-label">System Status:</span><span class="t-val" style="color: var(--emerald);" id="resStatus"></span></div>
-            <div class="ticket-row"><span class="t-label">Auth Code:</span><span class="t-val" style="color: var(--gold);" id="resCode"></span></div>
+            <div class="ticket-row"><span class="t-label" data-i18n="lblCommander">Commander:</span><span class="t-val" id="resName"></span></div>
+            <div class="ticket-row"><span class="t-label" data-i18n="lblMission">Mission:</span><span class="t-val" id="resMission"></span></div>
+            <div class="ticket-row"><span class="t-label" data-i18n="lblWindow">Launch Window:</span><span class="t-val" id="resWindow"></span></div>
+            <div class="ticket-row"><span class="t-label" data-i18n="lblStatus">System Status:</span><span class="t-val" style="color: var(--emerald);" id="resStatus"></span></div>
+            <div class="ticket-row"><span class="t-label" data-i18n="lblCode">Auth Code:</span><span class="t-val" style="color: var(--gold);" id="resCode"></span></div>
         </div>
 
-        <button class="btn-action" onclick="alert('✅ Launch Pass verified successfully!')">✨ Copy / Save Launch Pass</button>
+        <button class="btn-action" onclick="alert('✅ Launch Pass verified successfully!')" data-i18n="btnSave">✨ Save Launch Pass</button>
     </div>
 
     <script>
+        // Multi-language dictionary
+        const langData = {
+            en: {
+                envPrompt: "LAUNCH SEQUENCE GATE",
+                envSub: "Tap wax seal to initiate countdown & go-live",
+                btnBack: "Back",
+                btnNext: "Next ➔",
+                successHeader: "Launch Sequence Successful",
+                successSub: "The ecosystem is fully ready for go-live.",
+                lblCommander: "Commander:",
+                lblMission: "Mission:",
+                lblWindow: "Launch Window:",
+                lblStatus: "System Status:",
+                lblCode: "Auth Code:",
+                btnSave: "✨ Save Launch Pass",
+                stepsMainnet: [
+                    { title: "Commander Name?", desc: "Enter the name of the authorized launch commander.", placeholder: "Admin Crisp" },
+                    { title: "Target Launch Window?", desc: "Example: T-Minus 24 Hours or Immediate.", placeholder: "T-Minus 0 Hours (Immediate)" },
+                    { title: "System Readiness Status?", desc: "Confirm system conditions prior to deployment.", options: [
+                        {val: "Greenlight - Nominal", text: "Greenlight - Nominal (All Systems Go)"},
+                        {val: "Override - Force Deploy", text: "Override - Force Deploy"}
+                    ]},
+                    { title: "Security Clearance Passcode?", desc: "Enter your 4-digit code or key confirmation.", placeholder: "••••", type: "password" }
+                ],
+                stepsBeta: [
+                    { title: "Beta Lead Name?", desc: "Enter the name of the beta coordinator.", placeholder: "Beta Lead" },
+                    { title: "Release Channel?", desc: "Target staging branch or environment.", placeholder: "staging-v2" },
+                    { title: "Diagnostics Status?", desc: "Select staging stability level.", options: [
+                        {val: "Stable Candidate", text: "Stable Candidate"},
+                        {val: "Experimental Build", text: "Experimental Build"}
+                    ]},
+                    { title: "Beta Passcode Key?", desc: "Enter beta access confirmation code.", placeholder: "••••", type: "password" }
+                ]
+            },
+            tl: {
+                envPrompt: "LAUNCH SEQUENCE GATE",
+                envSub: "I-tap ang wax seal upang simulan ang countdown at go-live",
+                btnBack: "Bumalik",
+                btnNext: "Susunod ➔",
+                successHeader: "Tagumpay ang Launch Sequence",
+                successSub: "Handa na ang ecosystem para mag-live.",
+                lblCommander: "Commander:",
+                lblMission: "Misyon:",
+                lblWindow: "Launch Window:",
+                lblStatus: "Katatagan ng Sistema:",
+                lblCode: "Auth Code:",
+                btnSave: "✨ I-save ang Launch Pass",
+                stepsMainnet: [
+                    { title: "Pangalan ng Commander?", desc: "Ilagay ang pangalan ng opisyal na magpapatakbo ng launch.", placeholder: "Admin Crisp" },
+                    { title: "Target Launch Window?", desc: "Halimbawa: T-Minus 24 Oras o kaagad.", placeholder: "T-Minus 0 Oras (Kaagad)" },
+                    { title: "System Readiness Status?", desc: "Kumpirmahin ang kondisyon ng sistema bago i-deploy.", options: [
+                        {val: "Greenlight - Nominal", text: "Greenlight - Nominal (Lahat ng Sistema ay Handang-handa)"},
+                        {val: "Override - Force Deploy", text: "Override - Force Deploy"}
+                    ]},
+                    { title: "Security Clearance Passcode?", desc: "Ilagay ang iyong 4-digit code o key confirmation.", placeholder: "••••", type: "password" }
+                ],
+                stepsBeta: [
+                    { title: "Pangalan ng Beta Lead?", desc: "Ilagay ang pangalan ng beta coordinator.", placeholder: "Beta Lead" },
+                    { title: "Release Channel?", desc: "Target staging branch o environment.", placeholder: "staging-v2" },
+                    { title: "Diagnostics Status?", desc: "Piliin ang antas ng katatagan sa staging.", options: [
+                        {val: "Stable Candidate", text: "Stable Candidate"},
+                        {val: "Experimental Build", text: "Experimental Build"}
+                    ]},
+                    { title: "Beta Passcode Key?", desc: "Ilagay ang beta access confirmation code.", placeholder: "••••", type: "password" }
+                ]
+            }
+        };
+
+        let currentLang = 'en';
         let currentTheme = 'dark';
+        let mode = 'mainnet'; // mainnet or beta
+        let step = 1;
+        let launchDataUser = { name: '', window: '', status: '' };
+
+        function toggleLang() {
+            currentLang = currentLang === 'en' ? 'tl' : 'en';
+            document.getElementById('langBtn').innerText = currentLang === 'en' ? '🇵🇭 Tagalog' : '🇬🇧 English';
+            updateStaticText();
+            if (document.getElementById('stepGate').classList.contains('hidden') === false) {
+                renderQuestion();
+            }
+        }
+
         function toggleTheme() {
             currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
             document.body.setAttribute('data-theme', currentTheme);
         }
 
-        let mode = 'mainnet';
-        let step = 1;
-        let launchDataUser = { name: '', window: '', status: '' };
+        function updateStaticText() {
+            const dict = langData[currentLang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key]) el.innerText = dict[key];
+            });
+        }
 
         function openEnvelope() {
             document.getElementById('envelopeObj').classList.add('open');
@@ -425,42 +519,33 @@
             document.getElementById('errorMsg').innerText = '';
             document.getElementById('btnBack').classList.toggle('hidden', step === 1);
             
-            const totalSteps = 4;
-            document.getElementById('stepIndicator').innerText = `Step ${step} of ${totalSteps} • ${mode.toUpperCase()}`;
+            const dict = langData[currentLang];
+            const stepsList = mode === 'mainnet' ? dict.stepsMainnet : dict.stepsBeta;
+            const qData = stepsList[step - 1];
 
-            let title = '', desc = '', html = '';
+            document.getElementById('stepIndicator').innerText = `Step ${step} of 4 • ${mode.toUpperCase()}`;
+            document.getElementById('qTitle').innerText = qData.title;
+            document.getElementById('qDesc').innerText = qData.desc;
 
-            if (step === 1) {
-                title = "Commander Name?";
-                desc = "Ilagay ang pangalan ng nag-aapruba ng launch.";
-                html = `<input type="text" id="ansVal" placeholder="Admin Crisp" value="${launchDataUser.name}">`;
-            } else if (step === 2) {
-                title = "Target Launch Window?";
-                desc = "Halimbawa: T-Minus 24 Hours o kaya'y ngayong araw.";
-                html = `<input type="text" id="ansVal" placeholder="T-Minus 0 Hours (Immediate)" value="${launchDataUser.window}">`;
-            } else if (step === 3) {
-                title = "System Readiness Status?";
-                desc = "Kumpirmahin ang kalagayan ng system bago i-deploy.";
-                html = `<select id="ansVal">
-                    <option value="">Pili ng status...</option>
-                    <option value="Greenlight - Nominal">Greenlight - Nominal (All Systems Go)</option>
-                    <option value="Override - Force Deploy">Override - Force Deploy</option>
-                </select>`;
-            } else if (step === 4) {
-                title = "Security Clearance Passcode?";
-                desc = "Ilagay ang iyong 4-digit code o key confirmation.";
-                html = `<input type="password" id="ansVal" placeholder="••••" value="">`;
+            let html = '';
+            if (qData.options) {
+                let optionsHtml = `<option value="">${currentLang === 'en' ? 'Select status...' : 'Pumili ng status...'}</option>`;
+                qData.options.forEach(opt => {
+                    optionsHtml += `<option value="${opt.val}">${opt.text}</option>`;
+                });
+                html = `<select id="ansVal">${optionsHtml}</select>`;
+            } else {
+                let val = step === 1 ? launchDataUser.name : (step === 2 ? launchDataUser.window : '');
+                html = `<input type="${qData.type || 'text'}" id="ansVal" placeholder="${qData.placeholder}" value="${val}">`;
             }
+
+            document.getElementById('inputContainer').innerHTML = html;
 
             if (step < 4) {
-                document.getElementById('btnNext').innerText = "Susunod ➔";
+                document.getElementById('btnNext').innerText = dict.btnNext;
             } else {
-                document.getElementById('btnNext').innerText = "Initiate Go-Live 🚀";
+                document.getElementById('btnNext').innerText = currentLang === 'en' ? 'Initiate Go-Live 🚀' : 'Simulan ang Go-Live 🚀';
             }
-
-            document.getElementById('qTitle').innerText = title;
-            document.getElementById('qDesc').innerText = desc;
-            document.getElementById('inputContainer').innerHTML = html;
         }
 
         function nextStep() {
@@ -469,7 +554,7 @@
             const val = valElem ? valElem.value.trim() : '';
 
             if (!val) {
-                err.innerText = "⚠️ Paki-fill up ang kinakailangang field bago tumuloy.";
+                err.innerText = currentLang === 'en' ? "⚠️ Please fill out this field before proceeding." : "⚠️ Paki-fill up muna ang patlang na ito.";
                 return;
             }
 
@@ -488,15 +573,12 @@
         function prevStep() {
             if (step > 1) { step--; renderQuestion(); }
         }
-    </script>
-            
-    <!-- 1. Dito mo nilagay ang function mo directly sa index.html -->
-    <script>
+
         function showSuccess() {
             document.getElementById('stepGate').classList.add('hidden');
             
             document.getElementById('resName').innerText = launchDataUser.name;
-            document.getElementById('resMission').innerText = mode === 'mainnet' ? launchData.mission : "Beta Protocol v2";
+            document.getElementById('resMission').innerText = mode === 'mainnet' ? (typeof launchData !== 'undefined' ? launchData.mission : "Mainnet Go-Live") : "Beta Release v2";
             document.getElementById('resWindow').innerText = launchDataUser.window;
             document.getElementById('resStatus').innerText = launchDataUser.status;
             document.getElementById('resCode').innerText = 'CRISP-LAUNCH-' + Math.random().toString(36).substring(2, 7).toUpperCase();
@@ -505,7 +587,7 @@
         }
     </script>
 
-    <!-- 2. Script para ikonekta ang logic mula sa repo.js -->
+    <!-- repo.js integration -->
     <script src="repo.js"></script>
 </body>
 </html>
